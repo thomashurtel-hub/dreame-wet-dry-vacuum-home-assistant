@@ -391,8 +391,6 @@ REGIONS = {
 # H15 Pro (dreame.hold.w2448e). Relevés MQTT faits sur l'appareil le
 # 2026-11-16 en changeant un réglage à la fois dans l'app Dreamehome.
 # Confirmés : 16.6, 16.1, 16.2, 200.3, 1.10, 1.7 (renvoyés par MQTT).
-# Expérimentaux : codes repris du H14 Pro, jamais renvoyés par le H15 Pro ;
-# l'effet doit être vérifié sur l'appareil.
 # ---------------------------------------------------------------------------
 H15_PRO_MODEL = "dreame.hold.w2448e"
 
@@ -401,23 +399,18 @@ H15_PRO_SWITCH_PROPS: dict[tuple[int, int], dict] = {
     # Relevé : 0 puis 1 en basculant « Retour au lavage et séchage automatique ».
     # Sens (0 = activé ?) à confirmer.
     (1, 7): {"key": "auto_wash_dry_on_dock", "name": "Lavage et séchage auto au retour sur la base", "icon": "mdi:home-import-outline"},
-    # Expérimental (codes H14 Pro)
-    # Pas de lumière sur le H15 Pro (1.3 absent).
-    (1, 4): KNOWN_SWITCH_PROPS[(1, 4)],
-    (1, 9): KNOWN_SWITCH_PROPS[(1, 9)],
 }
 
-H15_PRO_NUMBER_PROPS: dict[tuple[int, int], dict] = {
-    # Expérimental (code H14 Pro)
-    (1, 14): KNOWN_NUMBER_PROPS[(1, 14)],
-}
+# Aucun code du H14 Pro : seuls les réglages relevés sur le H15 Pro sont gardés.
+# Refusés ou absents sur le H15 Pro : 1.3 (lumière), 23.1 (traction).
+H15_PRO_NUMBER_PROPS: dict[tuple[int, int], dict] = {}
 
 H15_PRO_SELECT_PROPS: dict[tuple[int, int], dict] = {
     (16, 1): {"key": "suction_power_custom", "name": "Puissance d'aspiration (perso)", "icon": "mdi:fan",
               "options": {1: "light", 2: "standard", 3: "strong"}, "config": True},
-    # 1 = débit faible : supposé, pas encore relevé.
+    # Seules les valeurs relevées ; le niveau le plus faible reste à relever.
     (16, 2): {"key": "water_flow_custom", "name": "Débit d'eau (perso)", "icon": "mdi:water",
-              "options": {1: "low", 2: "standard", 3: "wet"}, "config": True},
+              "options": {2: "standard", 3: "wet"}, "config": True},
     # 200.3 ressemble à un champ de bits (0x4000 / 0x5000 / 0x6000).
     (200, 3): {"key": "wash_mode", "name": "Mode de lavage", "icon": "mdi:washing-machine",
                "options": {16384: "standard", 20480: "deep", 24576: "auto"}},

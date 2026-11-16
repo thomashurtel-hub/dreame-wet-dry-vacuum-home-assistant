@@ -151,6 +151,10 @@ class TestH15Pro:
         assert (16, 6) in H15_PRO.switches and (1, 7) in H15_PRO.switches
         assert (1, 3) not in H15_PRO.switches  # no light on this model
         assert (23, 1) not in H15_PRO.selects  # rejected by the device
+        # Only codes captured on the H15 Pro itself.
+        assert set(H15_PRO.switches) == {(16, 6), (1, 7)}
+        assert set(H15_PRO.selects) == {(16, 1), (16, 2), (200, 3), (1, 10)}
+        assert not H15_PRO.numbers and not H15_PRO.button_keys
 
     def test_h14_profile_keeps_global_tables(self):
         assert H14_PRO.switches is None and H14_PRO.selects is None

@@ -227,7 +227,6 @@
       "water_flow_custom": {
         "name": "Water flow (custom)",
         "state": {
-          "low": "Low",
           "standard": "Standard",
           "wet": "Wet"
         }

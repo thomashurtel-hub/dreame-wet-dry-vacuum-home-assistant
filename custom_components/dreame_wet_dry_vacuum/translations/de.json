@@ -227,7 +227,6 @@
       "water_flow_custom": {
         "name": "Wassermenge (benutzerdefiniert)",
         "state": {
-          "low": "Niedrig",
           "standard": "Standard",
           "wet": "Nass"
         }

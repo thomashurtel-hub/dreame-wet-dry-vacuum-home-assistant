@@ -227,7 +227,6 @@
       "water_flow_custom": {
         "name": "Débit d'eau (perso)",
         "state": {
-          "low": "Faible",
           "standard": "Standard",
           "wet": "Humide"
         }
