@@ -82,6 +82,15 @@ class DreameWetDryCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             or ""
         )
         self.profile: ModelProfile = get_profile(self.model)
+        # Also poll this model's own readable controls (H15 Pro: 200.3, 1.10…).
+        extra = {
+            f"{s}.{p}"
+            for table in (self.profile.switches, self.profile.numbers, self.profile.selects)
+            if table
+            for (s, p), meta in table.items()
+            if not meta.get("optimistic")
+        }
+        self._poll_keys: list[str] = sorted(set(_POLL_KEYS) | extra)
         # Latest cloud snapshot (online, battery, status…), refreshed each poll
         self.snapshot: dict[str, Any] = {}
         # Live property store keyed by (siid, piid)
@@ -210,7 +219,7 @@ class DreameWetDryCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         # This is what makes alerts like "dirty tank full" reliable even when MQTT
         # missed the push (e.g. HA started after the event fired).
         try:
-            values = await self.api.get_status_props(self.device_id, _POLL_KEYS)
+            values = await self.api.get_status_props(self.device_id, self._poll_keys)
         except DreameAPIError as err:
             _LOGGER.debug("status_props poll failed (non-fatal): %s", err)
             values = None

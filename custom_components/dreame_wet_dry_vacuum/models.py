@@ -25,6 +25,10 @@ from .const import (
     H15_PRO_HEAT_MODEL,
     H15_PRO_HEAT_MODEL_ALT,
     H15_PRO_HEAT_STATUS_EN,
+    H15_PRO_MODEL,
+    H15_PRO_NUMBER_PROPS,
+    H15_PRO_SELECT_PROPS,
+    H15_PRO_SWITCH_PROPS,
     STATUS_GROUP,
 )
 
@@ -65,6 +69,11 @@ class ModelProfile:
     status_groups: Mapping[int, str]
     # Assume a 60 h life when the device does not report the full life.
     consumable_fallback: bool
+    # Writable controls for this model; None means the H14 Pro tables
+    # (KNOWN_SWITCH_PROPS, KNOWN_NUMBER_PROPS, KNOWN_SELECT_PROPS).
+    switches: Mapping[tuple[int, int], dict] | None = None
+    numbers: Mapping[tuple[int, int], dict] | None = None
+    selects: Mapping[tuple[int, int], dict] | None = None
 
 
 H14_PRO = ModelProfile(
@@ -119,6 +128,27 @@ H15_PRO_HEAT = ModelProfile(
     consumable_fallback=False,
 )
 
+# H15 Pro (dreame.hold.w2448e): mapped from MQTT captures on 2026-11-16.
+# State names reuse the H15 Pro Heat table (same family, to be checked).
+H15_PRO = ModelProfile(
+    key="h15_pro",
+    name="H15 Pro",
+    tested=True,
+    platforms=ALL_PLATFORMS,
+    readable_props=frozenset({(2, 1), (3, 1), (1, 28)}),
+    alert_keys=frozenset(),
+    prop_binaries=False,
+    # Expérimental : autonettoyage et séchage par 1.1 / 1.2 comme le H14 Pro.
+    button_keys=frozenset({(1, 1), (1, 2)}),
+    status_labels={"": H15_PRO_HEAT_STATUS_EN},
+    work_mode_labels=True,
+    status_groups=H15_PRO_HEAT.status_groups,
+    consumable_fallback=False,
+    switches=H15_PRO_SWITCH_PROPS,
+    numbers=H15_PRO_NUMBER_PROPS,
+    selects=H15_PRO_SELECT_PROPS,
+)
+
 GENERIC = ModelProfile(
     key="generic",
     name="Generic",
@@ -139,6 +169,7 @@ PROFILES: dict[str, ModelProfile] = {
     H15_MIX_MODEL: H15_MIX,
     H15_PRO_HEAT_MODEL: H15_PRO_HEAT,
     H15_PRO_HEAT_MODEL_ALT: H15_PRO_HEAT,
+    H15_PRO_MODEL: H15_PRO,
 }
 
 # Log each untested model and each unknown status code once per run.

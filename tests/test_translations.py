@@ -8,6 +8,9 @@ import pytest
 from custom_components.dreame_wet_dry_vacuum.const import (
     ALERT_BINARY_SENSORS,
     CONSUMABLE_SENSORS,
+    H15_PRO_NUMBER_PROPS,
+    H15_PRO_SELECT_PROPS,
+    H15_PRO_SWITCH_PROPS,
     KNOWN_BINARY_PROPS,
     KNOWN_BUTTON_PROPS,
     KNOWN_MQTT_PROPS,
@@ -25,9 +28,12 @@ EXPECTED: dict[str, set[str]] = {
     "binary_sensor": {"online", "charging"}
     | {m["key"] for m in KNOWN_BINARY_PROPS.values()}
     | {m["key"] for m in ALERT_BINARY_SENSORS},
-    "switch": {m["key"] for m in KNOWN_SWITCH_PROPS.values()},
-    "number": {m["key"] for m in KNOWN_NUMBER_PROPS.values()},
-    "select": {m["key"] for m in KNOWN_SELECT_PROPS.values()},
+    "switch": {m["key"] for m in KNOWN_SWITCH_PROPS.values()}
+    | {m["key"] for m in H15_PRO_SWITCH_PROPS.values()},
+    "number": {m["key"] for m in KNOWN_NUMBER_PROPS.values()}
+    | {m["key"] for m in H15_PRO_NUMBER_PROPS.values()},
+    "select": {m["key"] for m in KNOWN_SELECT_PROPS.values()}
+    | {m["key"] for m in H15_PRO_SELECT_PROPS.values()},
     "button": {m["key"] for m in KNOWN_BUTTON_PROPS.values()},
 }
 

@@ -19,7 +19,11 @@ async def async_setup_entry(
     coordinator = entry.runtime_data
     async_add_entities(
         DreameWetDryNumber(coordinator, key, meta)
-        for key, meta in KNOWN_NUMBER_PROPS.items()
+        for key, meta in (
+            coordinator.profile.numbers
+            if coordinator.profile.numbers is not None
+            else KNOWN_NUMBER_PROPS
+        ).items()
     )
 
 
@@ -37,6 +41,8 @@ class DreameWetDryNumber(DreameWetDryEntity, NumberEntity):
             self._attr_native_unit_of_measurement = meta["unit"]
         if meta.get("config"):
             self._attr_entity_category = EntityCategory.CONFIG
+        if meta.get("optimistic"):
+            self._attr_assumed_state = True
 
     @property
     def native_value(self) -> float | None:

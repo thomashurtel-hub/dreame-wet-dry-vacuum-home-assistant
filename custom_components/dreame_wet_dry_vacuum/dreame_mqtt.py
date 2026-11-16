@@ -139,6 +139,8 @@ class DreameMqttClient:
                 self.state[key] = item.get("value")
                 changed[key] = item.get("value")
         if changed:
+            # Property numbers and values only (no ids): used to map new models.
+            _LOGGER.debug("MQTT props %s", {f"{a}.{b}": v for (a, b), v in changed.items()})
             try:
                 self._on_update(dict(self.state))
             except Exception:

@@ -185,6 +185,9 @@
       },
       "time_dry_after_clean": {
         "name": "Timed dry after cleaning"
+      },
+      "auto_wash_dry_on_dock": {
+        "name": "Auto wash and dry on docking"
       }
     },
     "number": {
@@ -211,6 +214,37 @@
           "light": "Light",
           "balanced": "Balanced",
           "strong": "Strong"
+        }
+      },
+      "suction_power_custom": {
+        "name": "Suction power (custom)",
+        "state": {
+          "light": "Light",
+          "standard": "Standard",
+          "strong": "Strong"
+        }
+      },
+      "water_flow_custom": {
+        "name": "Water flow (custom)",
+        "state": {
+          "low": "Low",
+          "standard": "Standard",
+          "wet": "Wet"
+        }
+      },
+      "wash_mode": {
+        "name": "Wash mode",
+        "state": {
+          "standard": "Standard",
+          "deep": "Deep clean",
+          "auto": "Auto"
+        }
+      },
+      "dry_mode": {
+        "name": "Drying mode",
+        "state": {
+          "turbo_5min": "Super fast (5 min)",
+          "high_30min": "Fast (30 min)"
         }
       }
     },

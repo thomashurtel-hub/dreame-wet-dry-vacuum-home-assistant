@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any
+from unittest.mock import AsyncMock
 
 import pytest
 from homeassistant.config_entries import SOURCE_REAUTH, ConfigEntryState
@@ -240,3 +241,38 @@ async def test_no_bind_domain_means_polling_only(
     assert entry.state is ConfigEntryState.LOADED
     mqtt_client.assert_not_called()
     assert entry.runtime_data.mqtt is None
+
+
+H15_PRO_MODEL = "dreame.hold.w2448e"
+
+
+async def test_h15_pro_gets_its_controls(hass: HomeAssistant, mqtt_client) -> None:
+    """H15 Pro (w2448e): selects read the polled values and write back."""
+    api = make_api(device_record(H15_PRO_MODEL))
+    api.get_status_props = AsyncMock(
+        return_value={"16.1": 3, "16.2": 2, "200.3": 20480, "1.10": 1, "16.6": 1, "1.7": 1}
+    )
+    entry = await setup_entry(hass, api, H15_PRO_MODEL)
+    assert entry.state is ConfigEntryState.LOADED
+
+    # The profile's own keys are polled.
+    polled = api.get_status_props.await_args.args[1]
+    assert {"200.3", "1.10", "16.1", "16.2"} <= set(polled)
+
+    assert _state(hass, "select", "suction_power_custom").state == "strong"
+    assert _state(hass, "select", "water_flow_custom").state == "standard"
+    assert _state(hass, "select", "wash_mode").state == "deep"
+    assert _state(hass, "select", "dry_mode").state == "high_30min"
+    assert _state(hass, "switch", "custom_switch").state == "on"
+    assert _state(hass, "switch", "auto_wash_dry_on_dock").state == "on"
+    # H14-only controls stay off this model.
+    reg = er.async_get(hass)
+    assert reg.async_get_entity_id("number", DOMAIN, f"{DID}_clean_power") is None
+
+    await hass.services.async_call(
+        "select",
+        "select_option",
+        {"entity_id": _state(hass, "select", "wash_mode").entity_id, "option": "auto"},
+        blocking=True,
+    )
+    api.set_property.assert_awaited_with(DID, 200, 3, 24576)

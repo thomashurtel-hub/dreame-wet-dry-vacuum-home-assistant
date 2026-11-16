@@ -185,6 +185,9 @@
       },
       "time_dry_after_clean": {
         "name": "Zeitgesteuerte Trocknung nach der Reinigung"
+      },
+      "auto_wash_dry_on_dock": {
+        "name": "Automatisch waschen und trocknen in der Station"
       }
     },
     "number": {
@@ -211,6 +214,37 @@
           "light": "Leicht",
           "balanced": "Ausgeglichen",
           "strong": "Stark"
+        }
+      },
+      "suction_power_custom": {
+        "name": "Saugleistung (benutzerdefiniert)",
+        "state": {
+          "light": "Leicht",
+          "standard": "Standard",
+          "strong": "Stark"
+        }
+      },
+      "water_flow_custom": {
+        "name": "Wassermenge (benutzerdefiniert)",
+        "state": {
+          "low": "Niedrig",
+          "standard": "Standard",
+          "wet": "Nass"
+        }
+      },
+      "wash_mode": {
+        "name": "Waschmodus",
+        "state": {
+          "standard": "Standard",
+          "deep": "Tiefenreinigung",
+          "auto": "Automatisch"
+        }
+      },
+      "dry_mode": {
+        "name": "Trocknungsmodus",
+        "state": {
+          "turbo_5min": "Superschnell (5 min)",
+          "high_30min": "Schnell (30 min)"
         }
       }
     },

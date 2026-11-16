@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from homeassistant.components.select import SelectEntity
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -18,7 +19,11 @@ async def async_setup_entry(
     coordinator = entry.runtime_data
     async_add_entities(
         DreameWetDrySelect(coordinator, key, meta)
-        for key, meta in KNOWN_SELECT_PROPS.items()
+        for key, meta in (
+            coordinator.profile.selects
+            if coordinator.profile.selects is not None
+            else KNOWN_SELECT_PROPS
+        ).items()
     )
 
 
@@ -34,6 +39,10 @@ class DreameWetDrySelect(DreameWetDryEntity, SelectEntity):
         self._value_to_option: dict[int, str] = meta["options"]
         self._option_to_value = {v: k for k, v in self._value_to_option.items()}
         self._attr_options = list(self._value_to_option.values())
+        if meta.get("config"):
+            self._attr_entity_category = EntityCategory.CONFIG
+        if meta.get("optimistic"):
+            self._attr_assumed_state = True
 
     @property
     def current_option(self) -> str | None:

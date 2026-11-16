@@ -20,7 +20,11 @@ async def async_setup_entry(
     coordinator = entry.runtime_data
     async_add_entities(
         DreameWetDrySwitch(coordinator, key, meta)
-        for key, meta in KNOWN_SWITCH_PROPS.items()
+        for key, meta in (
+            coordinator.profile.switches
+            if coordinator.profile.switches is not None
+            else KNOWN_SWITCH_PROPS
+        ).items()
     )
 
 

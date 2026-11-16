@@ -185,6 +185,9 @@
       },
       "time_dry_after_clean": {
         "name": "Séchage programmé après nettoyage"
+      },
+      "auto_wash_dry_on_dock": {
+        "name": "Lavage et séchage auto au retour sur la base"
       }
     },
     "number": {
@@ -211,6 +214,37 @@
           "light": "Léger",
           "balanced": "Équilibré",
           "strong": "Fort"
+        }
+      },
+      "suction_power_custom": {
+        "name": "Puissance d'aspiration (perso)",
+        "state": {
+          "light": "Légère",
+          "standard": "Standard",
+          "strong": "Forte"
+        }
+      },
+      "water_flow_custom": {
+        "name": "Débit d'eau (perso)",
+        "state": {
+          "low": "Faible",
+          "standard": "Standard",
+          "wet": "Humide"
+        }
+      },
+      "wash_mode": {
+        "name": "Mode de lavage",
+        "state": {
+          "standard": "Standard",
+          "deep": "Nettoyage en profondeur",
+          "auto": "Réglage auto"
+        }
+      },
+      "dry_mode": {
+        "name": "Mode de séchage",
+        "state": {
+          "turbo_5min": "Super vitesse (5 min)",
+          "high_30min": "Grande vitesse (30 min)"
         }
       }
     },

@@ -10,11 +10,13 @@ from custom_components.dreame_wet_dry_vacuum.const import (
     H15_MIX_MODEL,
     H15_PRO_HEAT_MODEL,
     H15_PRO_HEAT_MODEL_ALT,
+    H15_PRO_MODEL,
 )
 from custom_components.dreame_wet_dry_vacuum.models import (
     GENERIC,
     H14_PRO,
     H15_MIX,
+    H15_PRO,
     H15_PRO_HEAT,
     describe_status,
     get_profile,
@@ -37,6 +39,7 @@ class TestProfiles:
             (H15_MIX_MODEL, H15_MIX),
             (H15_PRO_HEAT_MODEL, H15_PRO_HEAT),
             (H15_PRO_HEAT_MODEL_ALT, H15_PRO_HEAT),
+            (H15_PRO_MODEL, H15_PRO),
             (UNKNOWN_MODEL, GENERIC),
             ("", GENERIC),
             (None, GENERIC),
@@ -133,3 +136,19 @@ class TestStatusNames:
         assert describe_status(GENERIC, UNKNOWN_MODEL, "abc") == "abc"
         assert status_group(GENERIC, None) is None
         assert status_group(GENERIC, "abc") is None
+
+
+class TestH15Pro:
+    """H15 Pro (w2448e): values captured over MQTT on 2026-11-16."""
+
+    def test_own_control_tables(self):
+        assert H15_PRO.selects[(16, 1)]["options"] == {1: "light", 2: "standard", 3: "strong"}
+        assert H15_PRO.selects[(16, 2)]["options"][3] == "wet"
+        assert H15_PRO.selects[(200, 3)]["options"] == {
+            16384: "standard", 20480: "deep", 24576: "auto",
+        }
+        assert H15_PRO.selects[(1, 10)]["options"] == {3: "turbo_5min", 1: "high_30min"}
+        assert (16, 6) in H15_PRO.switches and (1, 7) in H15_PRO.switches
+
+    def test_h14_profile_keeps_global_tables(self):
+        assert H14_PRO.switches is None and H14_PRO.selects is None

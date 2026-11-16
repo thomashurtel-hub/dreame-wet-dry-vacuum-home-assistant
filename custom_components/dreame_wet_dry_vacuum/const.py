@@ -386,3 +386,43 @@ REGIONS = {
     "ru": "Russia",
     "kr": "South Korea",
 }
+
+# ---------------------------------------------------------------------------
+# H15 Pro (dreame.hold.w2448e). Relevés MQTT faits sur l'appareil le
+# 2026-11-16 en changeant un réglage à la fois dans l'app Dreamehome.
+# Confirmés : 16.6, 16.1, 16.2, 200.3, 1.10, 1.7 (renvoyés par MQTT).
+# Expérimentaux : codes repris du H14 Pro, jamais renvoyés par le H15 Pro ;
+# l'effet doit être vérifié sur l'appareil.
+# ---------------------------------------------------------------------------
+H15_PRO_MODEL = "dreame.hold.w2448e"
+
+H15_PRO_SWITCH_PROPS: dict[tuple[int, int], dict] = {
+    (16, 6): KNOWN_SWITCH_PROPS[(16, 6)],
+    # Relevé : 0 puis 1 en basculant « Retour au lavage et séchage automatique ».
+    # Sens (0 = activé ?) à confirmer.
+    (1, 7): {"key": "auto_wash_dry_on_dock", "name": "Lavage et séchage auto au retour sur la base", "icon": "mdi:home-import-outline"},
+    # Expérimental (codes H14 Pro)
+    (1, 3): KNOWN_SWITCH_PROPS[(1, 3)],
+    (1, 4): KNOWN_SWITCH_PROPS[(1, 4)],
+    (1, 9): KNOWN_SWITCH_PROPS[(1, 9)],
+}
+
+H15_PRO_NUMBER_PROPS: dict[tuple[int, int], dict] = {
+    # Expérimental (code H14 Pro)
+    (1, 14): KNOWN_NUMBER_PROPS[(1, 14)],
+}
+
+H15_PRO_SELECT_PROPS: dict[tuple[int, int], dict] = {
+    (16, 1): {"key": "suction_power_custom", "name": "Puissance d'aspiration (perso)", "icon": "mdi:fan",
+              "options": {1: "light", 2: "standard", 3: "strong"}, "config": True},
+    # 1 = débit faible : supposé, pas encore relevé.
+    (16, 2): {"key": "water_flow_custom", "name": "Débit d'eau (perso)", "icon": "mdi:water",
+              "options": {1: "low", 2: "standard", 3: "wet"}, "config": True},
+    # 200.3 ressemble à un champ de bits (0x4000 / 0x5000 / 0x6000).
+    (200, 3): {"key": "wash_mode", "name": "Mode de lavage", "icon": "mdi:washing-machine",
+               "options": {16384: "standard", 20480: "deep", 24576: "auto"}},
+    (1, 10): {"key": "dry_mode", "name": "Mode de séchage", "icon": "mdi:hair-dryer",
+              "options": {3: "turbo_5min", 1: "high_30min"}},
+    # Expérimental (code H14 Pro, non renvoyé par le H15 Pro)
+    (23, 1): KNOWN_SELECT_PROPS[(23, 1)],
+}
