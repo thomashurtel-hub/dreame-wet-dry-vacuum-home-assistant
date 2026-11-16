@@ -150,6 +150,7 @@ class TestH15Pro:
         assert H15_PRO.selects[(1, 10)]["options"] == {3: "turbo_5min", 1: "high_30min"}
         assert (16, 6) in H15_PRO.switches and (1, 7) in H15_PRO.switches
         assert (1, 3) not in H15_PRO.switches  # no light on this model
+        assert (23, 1) not in H15_PRO.selects  # rejected by the device
 
     def test_h14_profile_keeps_global_tables(self):
         assert H14_PRO.switches is None and H14_PRO.selects is None

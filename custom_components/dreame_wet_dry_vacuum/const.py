@@ -423,6 +423,6 @@ H15_PRO_SELECT_PROPS: dict[tuple[int, int], dict] = {
                "options": {16384: "standard", 20480: "deep", 24576: "auto"}},
     (1, 10): {"key": "dry_mode", "name": "Mode de séchage", "icon": "mdi:hair-dryer",
               "options": {3: "turbo_5min", 1: "high_30min"}},
-    # Expérimental (code H14 Pro, non renvoyé par le H15 Pro)
-    (23, 1): KNOWN_SELECT_PROPS[(23, 1)],
+    # 23.1 (force de traction du H14 Pro) : refusé par le H15 Pro le
+    # 2026-11-16 ; code de traction du H15 Pro encore inconnu.
 }
