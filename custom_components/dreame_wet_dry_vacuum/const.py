@@ -402,7 +402,7 @@ H15_PRO_SWITCH_PROPS: dict[tuple[int, int], dict] = {
     # Sens (0 = activé ?) à confirmer.
     (1, 7): {"key": "auto_wash_dry_on_dock", "name": "Lavage et séchage auto au retour sur la base", "icon": "mdi:home-import-outline"},
     # Expérimental (codes H14 Pro)
-    (1, 3): KNOWN_SWITCH_PROPS[(1, 3)],
+    # Pas de lumière sur le H15 Pro (1.3 absent).
     (1, 4): KNOWN_SWITCH_PROPS[(1, 4)],
     (1, 9): KNOWN_SWITCH_PROPS[(1, 9)],
 }
